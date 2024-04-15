@@ -384,13 +384,13 @@ static void __init set_volt_table_CA57(void)
 	case 5 :
 		max_support_idx_CA57 = L10; break;	/* 1.5GHz */
 	default :
-		max_support_idx_CA57 = L4;		/* 2.1GHz */
+		max_support_idx_CA57 = L3;		/* 2.2GHz */
 	}
 #else
 	max_support_idx_CA57 = L13;	/* 1.2 GHz */
 #endif
 
-	min_support_idx_CA57 = L17;	/* 800 MHz */
+	min_support_idx_CA57 = L23;	/* 200 MHz */
 
 	pr_info("CPUFREQ of CA57 max_freq : L%d %u khz\n", max_support_idx_CA57,
 		exynos7420_freq_table_CA57[max_support_idx_CA57].frequency);
@@ -457,9 +457,8 @@ int __init exynos_cpufreq_cluster1_init(struct exynos_dvfs_info *info)
 	info->max_support_idx = max_support_idx_CA57;
 	info->min_support_idx = min_support_idx_CA57;
 
-	/* booting frequency is 1.7GHz */
-	info->boot_cpu_min_qos = exynos7420_freq_table_CA57[L8].frequency;
-	info->boot_cpu_max_qos = exynos7420_freq_table_CA57[L8].frequency;
+	info->boot_cpu_min_qos = exynos7420_freq_table_CA57[min_support_idx_CA57].frequency;
+	info->boot_cpu_max_qos = exynos7420_freq_table_CA57[max_support_idx_CA57].frequency;
 #ifdef CONFIG_SEC_PM
 	/* booting max frequency is 1.5GHz when JIG cable is attached */
 	info->jig_boot_cpu_max_qos = exynos7420_freq_table_CA57[L10].frequency;

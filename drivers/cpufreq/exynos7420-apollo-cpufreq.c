@@ -301,10 +301,10 @@ static void __init set_volt_table_CA53(void)
 	case 12 :
 		max_support_idx_CA53 = L7; break;	/* 1.3GHz */
 	default :
-		max_support_idx_CA53 = L5;	/* 1.5GHz */
+		max_support_idx_CA53 = L2;	/* 1.8GHz */
 	}
 
-	min_support_idx_CA53 = L16;	/* 400MHz */
+	min_support_idx_CA53 = L18;	/* 200MHz */
 	pr_info("CPUFREQ of CA53 max_freq : L%d %u khz\n", max_support_idx_CA53,
 		exynos7420_freq_table_CA53[max_support_idx_CA53].frequency);
 	pr_info("CPUFREQ of CA53 min_freq : L%d %u khz\n", min_support_idx_CA53,
@@ -369,9 +369,8 @@ int __init exynos_cpufreq_cluster0_init(struct exynos_dvfs_info *info)
 	info->max_support_idx = max_support_idx_CA53;
 	info->min_support_idx = min_support_idx_CA53;
 	info->boost_freq = exynos7420_freq_table_CA53[L10].frequency;
-	/* booting frequency is 1.4GHz */
-	info->boot_cpu_min_qos = exynos7420_freq_table_CA53[L6].frequency;
-	info->boot_cpu_max_qos = exynos7420_freq_table_CA53[L6].frequency;
+	info->boot_cpu_min_qos = exynos7420_freq_table_CA53[min_support_idx_CA53].frequency;
+	info->boot_cpu_max_qos = exynos7420_freq_table_CA53[max_support_idx_CA53].frequency;
 #if defined(CONFIG_PMU_COREMEM_RATIO)
 	info->region_bus_table = exynos7420_region_bus_table_CA53;
 #else
